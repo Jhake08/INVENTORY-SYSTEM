@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,14 +14,49 @@ import { Settings, Database, Download, CheckCircle, XCircle, Info } from "lucide
 import { settingsManager } from "@/lib/settings"
 
 export default function SettingsPage() {
-  const [currency, setCurrency] = useState(settingsManager.getCurrency())
+  const [currency, setCurrency] = useState<string>(settingsManager.getCurrency())
   const [notifications, setNotifications] = useState(true)
   const [autoBackup, setAutoBackup] = useState(true)
   const [dbStatus, setDbStatus] = useState<"checking" | "online" | "offline">("checking")
 
+  // New states for Google Sheets integration inputs
+  const [gsEmail, setGsEmail] = useState("")
+  const [gsPrivateKey, setGsPrivateKey] = useState("")
+  const [baseUrl, setBaseUrl] = useState("")
+
+  useEffect(() => {
+    // Load saved Google Sheets integration settings from localStorage or settingsManager if implemented
+    const savedGsEmail = localStorage.getItem("gsServiceAccountEmail") || ""
+    const savedGsPrivateKey = localStorage.getItem("gsPrivateKey") || ""
+    const savedBaseUrl = localStorage.getItem("baseUrl") || ""
+
+    setGsEmail(savedGsEmail)
+    setGsPrivateKey(savedGsPrivateKey)
+    setBaseUrl(savedBaseUrl)
+  }, [])
+
   const handleCurrencyChange = (newCurrency: string) => {
     setCurrency(newCurrency)
-    settingsManager.setCurrency(newCurrency)
+    settingsManager.updateSettings({ currency: newCurrency as "PHP" | "USD" })
+  }
+
+  const handleGsEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGsEmail(e.target.value)
+  }
+
+  const handleGsPrivateKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGsPrivateKey(e.target.value)
+  }
+
+  const handleBaseUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBaseUrl(e.target.value)
+  }
+
+  const saveIntegrationSettings = () => {
+    localStorage.setItem("gsServiceAccountEmail", gsEmail)
+    localStorage.setItem("gsPrivateKey", gsPrivateKey)
+    localStorage.setItem("baseUrl", baseUrl)
+    alert("Integration settings saved locally. Please restart the app if needed.")
   }
 
   const checkDatabaseHealth = async () => {
@@ -75,6 +110,7 @@ export default function SettingsPage() {
         <TabsList>
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="database">Database</TabsTrigger>
+          <TabsTrigger value="integration">Integration</TabsTrigger>
           <TabsTrigger value="backup">Backup</TabsTrigger>
         </TabsList>
 
@@ -100,6 +136,7 @@ export default function SettingsPage() {
                     <SelectItem value="JPY">JPY - Japanese Yen</SelectItem>
                     <SelectItem value="CAD">CAD - Canadian Dollar</SelectItem>
                     <SelectItem value="AUD">AUD - Australian Dollar</SelectItem>
+                    <SelectItem value="PHP">PHP - Philippine Peso</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -165,17 +202,51 @@ export default function SettingsPage() {
               <Button onClick={checkDatabaseHealth} variant="outline">
                 Check Connection
               </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-              <div className="space-y-2">
-                <Label>Google Sheets ID</Label>
-                <Input
-                  value={process.env.NEXT_PUBLIC_GOOGLE_SHEETS_ID || "Not configured"}
-                  disabled
-                  className="font-mono text-sm"
-                />
-                <p className="text-xs text-muted-foreground">
-                  Configure this in your environment variables: NEXT_PUBLIC_GOOGLE_SHEETS_ID
-                </p>
+        <TabsContent value="integration" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Settings className="h-5 w-5" />
+                <span>API & Google Sheets Integration</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="gsEmail">Google Service Account Email</Label>
+                  <Input
+                    id="gsEmail"
+                    type="email"
+                    value={gsEmail}
+                    onChange={handleGsEmailChange}
+                    placeholder="Enter Google Service Account Email"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="gsPrivateKey">Google Private Key</Label>
+                  <Input
+                    id="gsPrivateKey"
+                    type="password"
+                    value={gsPrivateKey}
+                    onChange={handleGsPrivateKeyChange}
+                    placeholder="Enter Google Private Key"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="baseUrl">API Base URL</Label>
+                  <Input
+                    id="baseUrl"
+                    type="url"
+                    value={baseUrl}
+                    onChange={handleBaseUrlChange}
+                    placeholder="Enter API Base URL"
+                  />
+                </div>
+                <Button onClick={saveIntegrationSettings}>Save Integration Settings</Button>
               </div>
             </CardContent>
           </Card>
