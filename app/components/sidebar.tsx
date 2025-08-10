@@ -3,25 +3,25 @@ import Link from 'next/link'
 
 const Sidebar: React.FC = () => {
   return (
-    <aside className="w-64 h-full bg-gray-800 text-white flex flex-col">
-      <div className="p-4 text-2xl font-bold border-b border-gray-700">
+    <aside className="w-64 h-full bg-gradient-to-b from-indigo-900 via-purple-900 to-indigo-900 text-white flex flex-col shadow-lg">
+      <div className="p-6 text-3xl font-extrabold tracking-wide border-b border-indigo-700">
         Inventory System
       </div>
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-6 space-y-4 text-lg font-semibold">
         <Link href="/">
-          <a className="block px-3 py-2 rounded hover:bg-gray-700">Dashboard</a>
+          <a className="block px-4 py-3 rounded-lg hover:bg-indigo-700 transition duration-300">Dashboard</a>
         </Link>
         <Link href="/products">
-          <a className="block px-3 py-2 rounded hover:bg-gray-700">Products</a>
+          <a className="block px-4 py-3 rounded-lg hover:bg-indigo-700 transition duration-300">Products</a>
         </Link>
         <Link href="/transactions">
-          <a className="block px-3 py-2 rounded hover:bg-gray-700">Transactions</a>
+          <a className="block px-4 py-3 rounded-lg hover:bg-indigo-700 transition duration-300">Transactions</a>
         </Link>
         <Link href="/reports">
-          <a className="block px-3 py-2 rounded hover:bg-gray-700">Reports</a>
+          <a className="block px-4 py-3 rounded-lg hover:bg-indigo-700 transition duration-300">Reports</a>
         </Link>
         <Link href="/settings">
-          <a className="block px-3 py-2 rounded hover:bg-gray-700">Settings</a>
+          <a className="block px-4 py-3 rounded-lg hover:bg-indigo-700 transition duration-300">Settings</a>
         </Link>
       </nav>
     </aside>

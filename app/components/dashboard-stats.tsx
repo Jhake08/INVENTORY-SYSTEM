@@ -8,11 +8,11 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, icon }) => {
   return (
-    <div className="bg-white shadow rounded p-4 flex items-center space-x-4">
-      {icon && <div className="text-3xl text-blue-500">{icon}</div>}
+    <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white shadow-lg rounded-lg p-6 flex items-center space-x-6">
+      {icon && <div className="text-4xl">{icon}</div>}
       <div>
-        <p className="text-sm font-medium text-gray-500">{title}</p>
-        <p className="text-2xl font-semibold text-gray-900">{value}</p>
+        <p className="text-sm font-semibold uppercase tracking-wide opacity-75">{title}</p>
+        <p className="text-3xl font-extrabold">{value}</p>
       </div>
     </div>
   )
@@ -28,7 +28,7 @@ const DashboardStats: React.FC = () => {
   ]
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       {stats.map((stat) => (
         <StatCard key={stat.title} title={stat.title} value={stat.value} />
       ))}
