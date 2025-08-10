@@ -8,7 +8,7 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, icon }) => {
   return (
-    <div className="bg-black bg-opacity-40 backdrop-blur-md text-white shadow-lg rounded-lg p-6 flex items-center space-x-6 transition-transform transform hover:scale-105 hover:shadow-2xl">
+    <div className="bg-black bg-opacity-40 backdrop-blur-md text-white shadow-lg rounded-lg p-6 flex items-center space-x-6 transition-transform transform hover:scale-105 hover:shadow-2xl" style={{ zoom: '75%' }}>
       {icon && <div className="text-4xl">{icon}</div>}
       <div>
         <p className="text-sm font-semibold uppercase tracking-wide opacity-75">{title}</p>
