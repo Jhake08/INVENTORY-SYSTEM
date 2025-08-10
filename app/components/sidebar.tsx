@@ -1,78 +1,31 @@
-"use client"
+import React from 'react'
+import Link from 'next/link'
 
-import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { BarChart3, Package, ArrowRightLeft, FileText, Settings, Menu, Home, CheckCircle, Activity } from "lucide-react"
-
-const navigation = [
-  { name: "Dashboard", href: "/", icon: Home },
-  { name: "Products", href: "/products", icon: Package },
-  { name: "Transactions", href: "/transactions", icon: ArrowRightLeft },
-  { name: "Reports", href: "/reports", icon: FileText },
-  { name: "System Check", href: "/system-check", icon: Activity },
-  { name: "Deployment Status", href: "/deployment-status", icon: CheckCircle },
-  { name: "Settings", href: "/settings", icon: Settings },
-]
-
-export default function Sidebar() {
-  const pathname = usePathname()
-  const [open, setOpen] = useState(false)
-
-  const SidebarContent = () => (
-    <div className="flex h-full flex-col">
-      <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <BarChart3 className="h-6 w-6" />
-          <span>Inventory Pro</span>
-        </Link>
-      </div>
-      <ScrollArea className="flex-1">
-        <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                pathname === item.href && "bg-muted text-primary",
-              )}
-              onClick={() => setOpen(false)}
-            >
-              <item.icon className="h-4 w-4" />
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-      </ScrollArea>
-    </div>
-  )
-
+const Sidebar: React.FC = () => {
   return (
-    <>
-      {/* Mobile Sidebar */}
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden bg-transparent">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col">
-          <SidebarContent />
-        </SheetContent>
-      </Sheet>
-
-      {/* Desktop Sidebar */}
-      <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2">
-          <SidebarContent />
-        </div>
+    <aside className="w-64 h-full bg-gray-800 text-white flex flex-col">
+      <div className="p-4 text-2xl font-bold border-b border-gray-700">
+        Inventory System
       </div>
-    </>
+      <nav className="flex-1 p-4 space-y-2">
+        <Link href="/">
+          <a className="block px-3 py-2 rounded hover:bg-gray-700">Dashboard</a>
+        </Link>
+        <Link href="/products">
+          <a className="block px-3 py-2 rounded hover:bg-gray-700">Products</a>
+        </Link>
+        <Link href="/transactions">
+          <a className="block px-3 py-2 rounded hover:bg-gray-700">Transactions</a>
+        </Link>
+        <Link href="/reports">
+          <a className="block px-3 py-2 rounded hover:bg-gray-700">Reports</a>
+        </Link>
+        <Link href="/settings">
+          <a className="block px-3 py-2 rounded hover:bg-gray-700">Settings</a>
+        </Link>
+      </nav>
+    </aside>
   )
 }
+
+export default Sidebar
